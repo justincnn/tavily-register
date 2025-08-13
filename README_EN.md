@@ -16,7 +16,7 @@ An intelligent automation solution based on deep HTML analysis for end-to-end Ta
 
 ```bash
 # Clone the project
-git clone <repository-url>
+git clone https://github.com/yatotm/tavily-register.git
 cd tavily-register
 
 # Auto install dependencies

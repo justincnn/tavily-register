@@ -16,7 +16,7 @@
 
 ```bash
 # 克隆项目
-git clone <repository-url>
+git clone https://github.com/yatotm/tavily-register.git
 cd tavily-register
 
 # 自动安装依赖
