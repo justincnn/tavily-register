@@ -27,16 +27,54 @@ pip install -r requirements.txt
 playwright install firefox
 ```
 
+## VPS 部署指南 (推荐)
+
+此方法适用于在没有图形化界面的 VPS 或服务器上运行。
+
+### 步骤 1: 在本地生成 `email_cookies.json`
+
+首先，在您的本地电脑（带有桌面环境）上生成邮箱的 `cookie` 文件。
+
+```bash
+# 确保已安装依赖
+pip install -r requirements.txt
+playwright install firefox
+
+# 运行 cookie 生成命令
+python run_vps.py setup-cookie
+```
+程序将打开一个浏览器。请在浏览器中 **手动登录您的 2925.com 邮箱**。登录成功后，关闭程序即可。
+
+操作成功后，项目目录下会生成一个 `email_cookies.json` 文件。
+
+### 步骤 2: 上传文件到 VPS
+
+将整个项目文件夹， **包括刚刚生成的 `email_cookies.json` 文件**，上传到您的 VPS。
+
+### 步骤 3: 在 VPS 上运行
+
+在 VPS 上，进入项目目录并执行以下命令：
+
+```bash
+# 安装依赖 (首次运行时需要)
+pip install -r requirements.txt
+playwright install firefox
+
+# 运行自动化注册
+# -c 参数指定要注册的账户数量
+python run_vps.py run -c 5
+```
+程序将以无头模式自动完成注册流程。
+
+---
+
+## 本地交互式运行 (旧版)
+
+如果您想在本地电脑上通过交互式菜单运行，请按以下步骤操作。
+
 ### 配置
 
-1. **设置邮箱前缀**
-   
-   编辑 `config.py`:
-   ```python
-   EMAIL_PREFIX = "your_prefix"  # 替换为您的2925.com邮箱前缀
-   ```
-
-2. **设置邮箱登录**
+1. **设置邮箱登录**
    ```bash
    python email_login_helper.py
    ```
@@ -56,7 +94,8 @@ python main.py
 
 ```
 tavily-register/
-├── main.py                          # 主程序入口
+├── run_vps.py                       # VPS 非交互式运行入口
+├── main.py                          # 本地交互式主程序
 ├── intelligent_tavily_automation.py  # 智能自动化核心
 ├── email_checker.py                 # 邮件验证和登录
 ├── email_login_helper.py            # 邮箱登录助手
