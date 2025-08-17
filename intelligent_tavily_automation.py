@@ -92,8 +92,20 @@ class IntelligentTavilyAutomation:
 
         if BROWSER_TYPE == "firefox":
             self.browser = self.playwright.firefox.launch(headless=headless_mode)
-        else:
-            self.browser = self.playwright.chromium.launch(headless=headless_mode)
+        elif BROWSER_TYPE == "webkit":
+            self.browser = self.playwright.webkit.launch(headless=headless_mode)
+        else:  # chromium
+            browser_args = [
+                '--no-sandbox',
+                '--disable-dev-shm-usage',
+                '--disable-gpu',
+                '--disable-web-security',
+                '--disable-features=VizDisplayCompositor'
+            ]
+            self.browser = self.playwright.chromium.launch(
+                headless=headless_mode,
+                args=browser_args
+            )
 
         self.page = self.browser.new_page()
         self.page.set_default_timeout(30000)

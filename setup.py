@@ -50,36 +50,27 @@ def install_dependencies():
 def install_playwright():
     """安装Playwright浏览器"""
     print("\n🌐 安装Playwright浏览器...")
-    
-    if not run_command("playwright install chromium", "安装Chromium浏览器"):
-        return False
-    
+
+    # 安装Firefox（与config.py中的默认设置一致）
+    if not run_command("playwright install firefox", "安装Firefox浏览器"):
+        print("⚠️ Firefox安装失败，尝试安装Chromium作为备选...")
+        if not run_command("playwright install chromium", "安装Chromium浏览器"):
+            print("❌ 浏览器安装失败，请手动运行: playwright install firefox")
+            return False
+
     return True
 
-def create_env_file():
-    """创建.env文件"""
-    print("\n⚙️ 创建环境配置文件...")
-    
-    if os.path.exists('.env'):
-        print("✅ .env文件已存在")
+def check_config():
+    """检查配置文件"""
+    print("\n⚙️ 检查配置文件...")
+
+    if os.path.exists('config.py'):
+        print("✅ config.py文件存在")
+        print("💡 请根据需要修改config.py中的EMAIL_PREFIX配置")
         return True
-    
-    if os.path.exists('.env.example'):
-        try:
-            with open('.env.example', 'r', encoding='utf-8') as f:
-                content = f.read()
-            
-            with open('.env', 'w', encoding='utf-8') as f:
-                f.write(content)
-            
-            print("✅ 已从.env.example创建.env文件")
-            return True
-        except Exception as e:
-            print(f"❌ 创建.env文件失败: {e}")
-            return False
     else:
-        print("⚠️ .env.example文件不存在，跳过.env文件创建")
-        return True
+        print("❌ config.py文件不存在")
+        return False
 
 def run_basic_test():
     """运行基础测试"""
@@ -106,7 +97,7 @@ def main():
         ("检查Python版本", check_python_version),
         ("安装Python依赖", install_dependencies),
         ("安装Playwright浏览器", install_playwright),
-        ("创建环境配置文件", create_env_file),
+        ("检查配置文件", check_config),
         ("运行基础测试", run_basic_test)
     ]
     
@@ -120,9 +111,10 @@ def main():
     print("\n" + "=" * 50)
     print("🎉 安装完成！")
     print("\n📖 使用说明:")
-    print("1. 运行主程序: python main.py")
-    print("2. 查看README.md了解详细使用方法")
-    print("3. 如需修改配置，请编辑config.py或.env文件")
+    print("1. 首先设置邮箱登录: python email_login_helper.py")
+    print("2. 修改config.py中的EMAIL_PREFIX为您的邮箱前缀")
+    print("3. 运行主程序: python main.py")
+    print("4. 查看README.md了解详细使用方法")
     
     return True
 

@@ -47,6 +47,7 @@ Thumbs.db
 # Project specific
 .env
 email_cookies.json
+api_keys.md
 *.png
 *.jpg
 *.jpeg
