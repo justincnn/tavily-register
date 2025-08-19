@@ -15,6 +15,7 @@ class EmailChecker:
         self.playwright = None
         self.browser = None
         self.page = None
+        self.managed_externally = False  # 若由外部传入页面/上下文，则不在此类中关闭浏览器
         
     def start_browser(self, headless=None):
         """启动浏览器"""
@@ -47,6 +48,20 @@ class EmailChecker:
         # 设置弹窗处理
         self.page.on("dialog", self.handle_dialog)
 
+    def attach_to(self, playwright, browser, page):
+        """附着到外部已存在的Playwright上下文/浏览器/页面，复用同一窗口"""
+        self.playwright = playwright
+        self.browser = browser
+        self.page = page
+        self.managed_externally = True
+        # 补充必要的默认配置与监听
+        if self.page:
+            try:
+                self.page.set_default_timeout(BROWSER_TIMEOUT)
+                self.page.on("dialog", self.handle_dialog)
+            except Exception:
+                pass
+
     def handle_dialog(self, dialog):
         """处理弹窗"""
         try:
@@ -65,7 +80,9 @@ class EmailChecker:
                 pass
 
     def close_browser(self):
-        """关闭浏览器"""
+        """关闭浏览器（仅在本类管理浏览器时关闭）"""
+        if self.managed_externally:
+            return
         if self.page:
             self.page.close()
         if self.browser:

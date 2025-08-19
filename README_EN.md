@@ -2,6 +2,14 @@
 
 English | [中文](README.md)
 
+<details>
+<summary>Changelog</summary>
+
+- 2025-08-19: Introduced single-window reuse (EmailChecker.attach_to + managed_externally). Complete registration, email verification, and API acquisition within the same browser context to preserve login state and cache, reducing instability from re-login and stale elements; improved dialog handling listeners and logging.
+
+</details>
+
+
 An intelligent automation solution based on deep HTML analysis for end-to-end Tavily API Key acquisition.
 
 ## Quick Start
@@ -30,7 +38,7 @@ playwright install firefox
 ### Configuration
 
 1. **Set Email Prefix**
-   
+
    Edit `config.py`:
    ```python
    EMAIL_PREFIX = "your_prefix"  # Replace with your 2925.com email prefix
@@ -71,8 +79,10 @@ tavily-register/
 
 ## Workflow
 
+- Supports end-to-end single-window reuse (Registration → Email Verification → Login → API acquisition) to avoid re-login and improve stability
+
 1. **Registration**: Automatically fill Tavily registration form
-2. **Email Verification**: Intelligently detect verification emails and click verification links
+2. **Email Verification**: Intelligently detect verification emails and click verification links (reusing the current page)
 3. **Login**: Automatically login to Tavily account
 4. **API Acquisition**: Intelligently identify and obtain API Key
 5. **Data Storage**: Save account information and API Key to file

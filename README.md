@@ -2,6 +2,14 @@
 
 [English](README_EN.md) | 中文
 
+<details>
+<summary>历史更新</summary>
+
+- 2025-08-19：引入同窗口复用（EmailChecker.attach_to + managed_externally），在同一浏览器上下文完成注册、邮箱验证与 API 获取，保持登录态与缓存，降低重登与元素失效导致的不稳定；优化弹窗处理监听与日志。
+
+</details>
+
+
 基于深层HTML分析的智能自动化解决方案，实现Tavily API Key的端到端自动获取。
 
 ## 快速开始
@@ -30,7 +38,7 @@ playwright install firefox
 ### 配置
 
 1. **设置邮箱前缀**
-   
+
    编辑 `config.py`:
    ```python
    EMAIL_PREFIX = "your_prefix"  # 替换为您的2925.com邮箱前缀
@@ -71,8 +79,10 @@ tavily-register/
 
 ## 使用流程
 
+- 支持同一浏览器窗口的端到端流程复用（注册→邮箱验证→登录→API 获取），避免二次登录，提升稳定性
+
 1. **注册阶段**: 自动填写Tavily注册表单
-2. **邮件验证**: 智能检测验证邮件并点击验证链接
+2. **邮件验证**: 智能检测验证邮件并点击验证链接（复用当前页面）
 3. **登录阶段**: 自动登录Tavily账户
 4. **API获取**: 智能识别并获取API Key
 5. **数据保存**: 保存账户信息和API Key到文件

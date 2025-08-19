@@ -368,14 +368,11 @@ class IntelligentTavilyAutomation:
             # 导入邮件检查器
             from email_checker import EmailChecker
 
-            self.log("📧 初始化邮件检查器...")
+            self.log("📧 初始化邮件检查器（共用当前浏览器上下文）...")
             email_checker = EmailChecker()
 
-            # 关闭当前浏览器实例，避免冲突
-            self.close_browser()
-
-            # 启动新的浏览器实例用于邮件检查，传递headless设置
-            email_checker.start_browser(headless=self.headless_mode)
+            # 复用当前浏览器与页面，不关闭（避免二次登录）
+            email_checker.attach_to(self.playwright, self.browser, self.page)
 
             try:
                 # 加载邮箱页面
